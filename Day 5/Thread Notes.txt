@@ -1,0 +1,12 @@
+import java.lang.* // default package of java
+
+javap import java.util.Scanner;		-- shows what are the buildin methods have been written
+
+
+extends Thread & implements Runnable are doing same work only
+implements keyword will Override
+
+Priority is 1 - 10
+sync and priority may not happen 	-- obj.setPriority(Thread.MIN_PRIORITY) //10
+								 	-- obj.setPriority(Thread.MAX_PRIORITY) //1
+								 	-- obj.setPriority(Thread.NORM_PRIORITY) // 5
