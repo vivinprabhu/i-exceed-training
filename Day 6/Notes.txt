@@ -1,0 +1,12 @@
+serialization -- converting objects to bytes
+
+
+FileOutputStream and FileinputStream are used to access file and text
+
+DataInputStream and DataOutputStream are used to access primitive data types in non-human understandable format (.dat)
+
+BufferStream have a buffer and much efficient compare to FileInputStream
+
+ByteArrayInputStream allows reading from byte arrays in memory
+
+Only ByteArrayOutputStream can also used to copy content to two file
