@@ -1,0 +1,30 @@
+First-class objects
+
+In programming, the term first-class objects (also known as first-class citizens) refers to entities that can be treated uniformly in a language. When something is a first-class object, it means that it can:
+
+    Be assigned to a variable: You can store it in a variable.
+    Be passed as an argument to a function: You can pass it into a function like any other data type.
+    Be returned from a function: You can return it from a function.
+    Be created at runtime: You can dynamically create it during execution.
+    Be stored in data structures: It can be used inside lists, maps, sets, etc.
+
+
+
+Closure Function : 
+Even a "normal" function stored in a variable is a closure if it captures variables from its enclosing scope
+
+
+
+Functions name based on parameter :
+
+0 parameter --> nullary Function
+1 parameter --> uniary Function
+2 parameter --> binary Function
+
+
+
+Private variables:
+        String name --> public
+        String _name --> private
+
+private are library scoped (library means a dart file (Eg. func.dart))
