@@ -1,0 +1,33 @@
+name: basics
+description: "Bank Application"
+publish_to: 'none' # Prevents publishing to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  marquee: ^2.2.3
+  carousel_slider: ^5.1.1
+  google_fonts: ^6.1.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/banking1.jpg
+    - assets/images/banking2.jpeg
+    - assets/images/banking3.jpg
+    - assets/images/fam.jpg
+    - assets/images/cal.svg
