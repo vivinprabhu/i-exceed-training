@@ -1,0 +1,188 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../widgets/main_card_carousel.dart';
+import '../widgets/drawer_menu.dart';
+import 'view_all_cards_screen.dart';
+
+enum HomeCategory { transact, invest, loans }
+
+class HomeScreen extends StatefulWidget {
+  final VoidCallback toggleTheme;
+  const HomeScreen({super.key, required this.toggleTheme});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  HomeCategory selectedCategory = HomeCategory.transact;
+  final hoverStates = <int, bool>{};
+
+  final Map<HomeCategory, List<Map<String, dynamic>>> categoryCards = {
+    HomeCategory.transact: [
+      {'icon': Icons.send, 'label': 'Send Money'},
+      {'icon': Icons.receipt, 'label': 'Bill Pay, FASTag'},
+      {'icon': Icons.local_offer, 'label': 'Offers & Loans'},
+      {'icon': Icons.account_balance, 'label': 'Accounts / FD'},
+      {'icon': Icons.credit_card, 'label': 'Cards / PayLater'},
+      {'icon': Icons.account_balance_wallet, 'label': 'UPI Payments'},
+    ],
+    HomeCategory.invest: [
+      {'icon': Icons.trending_up, 'label': 'Mutual Funds'},
+      {'icon': Icons.savings, 'label': 'SIP'},
+      {'icon': Icons.insights, 'label': 'Market Insights'},
+    ],
+    HomeCategory.loans: [
+      {'icon': Icons.money, 'label': 'Get Loan'},
+      {'icon': Icons.calculate, 'label': 'EMI Calculator'},
+      {'icon': Icons.verified_user, 'label': 'Credit Score'},
+    ],
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardStart = isDark ? Colors.grey[800]! : const Color(0xFFF1F6F8);
+    final cardEnd = isDark ? Colors.grey[700]! : const Color(0xFFCDD5D6);
+    final textColor = isDark ? Colors.white : const Color(0xFF142850);
+    final accentColor = isDark ? Colors.white : const Color(0xFF1E3C64);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Hi,", style: GoogleFonts.poppins(fontSize: 20, color: Colors.white)),
+        actions: [
+          IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {}),
+        ],
+        toolbarHeight: 70,
+      ),
+      drawer: DrawerMenu(toggleTheme: widget.toggleTheme),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            const MainCardCarousel(),
+            const SizedBox(height: 8),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ViewAllCardsPage()),
+                ),
+                child: Text("View All", style: GoogleFonts.poppins(color: accentColor)),
+              ),
+            ),
+            const SizedBox(height: 8),
+            _buildCategorySegmented(textColor, accentColor),
+            const SizedBox(height: 16),
+            _buildCategoryGrid(cardStart, cardEnd, textColor, accentColor),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: accentColor,
+        unselectedItemColor: textColor.withOpacity(0.5),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: "Transactions"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+        ],
+        currentIndex: 0,
+        onTap: (index) {
+          // Navigation logic if needed
+        },
+      ),
+    );
+  }
+
+  Widget _buildCategorySegmented(Color textColor, Color accentColor) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: SegmentedButton<HomeCategory>(
+        segments: const [
+          ButtonSegment(value: HomeCategory.transact, label: Text('Transact')),
+          ButtonSegment(value: HomeCategory.invest, label: Text('Invest')),
+          ButtonSegment(value: HomeCategory.loans, label: Text('Loans')),
+        ],
+        selected: {selectedCategory},
+        onSelectionChanged: (newSelection) {
+          setState(() {
+            selectedCategory = newSelection.first;
+          });
+        },
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) return accentColor;
+            return Colors.transparent;
+          }),
+          foregroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) return Colors.white;
+            return textColor;
+          }),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          ),
+          side: MaterialStateProperty.all(BorderSide(color: accentColor)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryGrid(Color cardStart, Color cardEnd, Color textColor, Color accentColor) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      child: Padding(
+        key: ValueKey<HomeCategory>(selectedCategory),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: categoryCards[selectedCategory]!.length,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1,
+          ),
+          itemBuilder: (context, index) {
+            final card = categoryCards[selectedCategory]![index];
+            final isHovered = hoverStates[index] ?? false;
+            return MouseRegion(
+              onEnter: (_) => setState(() => hoverStates[index] = true),
+              onExit: (_) => setState(() => hoverStates[index] = false),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () => debugPrint("Tapped ${card['label']}"),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [cardStart, cardEnd]),
+                      borderRadius: BorderRadius.circular(12),
+                      border: isHovered ? Border.all(color: accentColor, width: 2) : null,
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+                      ],
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(card['icon'], size: 28, color: textColor),
+                        const SizedBox(height: 8),
+                        Text(card['label'],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(fontSize: 12, color: textColor)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
