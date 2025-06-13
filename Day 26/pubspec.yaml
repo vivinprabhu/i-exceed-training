@@ -1,0 +1,65 @@
+name: bank_ui
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.1.0
+  font_awesome_flutter: ^10.7.0
+  intl: ^0.18.1
+  pdf: ^3.10.8
+  printing: ^5.11.0
+  url_launcher: ^6.2.5
+  fl_chart: ^0.64.0
+  marquee: ^2.2.3
+  carousel_slider: ^5.1.1
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_native_splash: ^2.4.0
+  flutter_lints: ^5.0.0
+
+  
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/bank_logo.jpg
+  android: true
+  ios: true
+  web: true
+  fullscreen: true
+  android_gravity: center
+  ios_content_mode: center
+
+  android_12:
+    color: "#ffffff"
+    image: assets/images/bank_logo.jpg
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/qrcode/qrcode.png
+    - assets/insurance/
+    - assets/carousel/
+    - assets/images/
+    - assets/transactions/
+    - assets/transfer_success/
+    - assets/loans/
+    - assets/images/bank_logo.jpg
+
+  # Uncomment and add if you use custom fonts
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 700
